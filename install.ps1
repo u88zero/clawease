@@ -1,6 +1,9 @@
 # ClawEase - Windows PowerShell Installer
 # "The NT Way to AI"
 
+# 解决终端乱码问题，确保 Emoji 和中文正常显示
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 Write-Host "🕶️ ClawEase Windows Installer: Preparing your Agent..." -ForegroundColor Cyan
 
 # 1. Install Scoop if missing
@@ -31,9 +34,16 @@ if (Test-Path $InstallDir) {
     Set-Location $InstallDir
 }
 
-# 4. pnpm Install
-Write-Host "🚀 Installing brains and 30+ built-in Skills..." -ForegroundColor Cyan
-# 核心修复：直接调用 pnpm 的完整路径或确保环境变量生效
+# 4. pnpm Install & Build
+Write-Host "🚀 Installing brains and building Agent cores..." -ForegroundColor Cyan
 & pnpm install
+# 核心修复：确保源码被编译
+& pnpm run build
 
-Write-Host "✅ SUCCESS! run 'node dist\index.js onboard' inside $InstallDir to begin." -ForegroundColor Green
+Write-Host "-------------------------------------------------------" -ForegroundColor White
+Write-Host "✅ SUCCESS! OpenClaw is ready to wake up." -ForegroundColor Green
+Write-Host "-------------------------------------------------------" -ForegroundColor White
+Write-Host "🕶️  Next Steps:" -ForegroundColor White
+Write-Host "1. Run: cd $InstallDir" -ForegroundColor White
+Write-Host "2. Run: node dist/index.js onboard" -ForegroundColor White
+Write-Host "-------------------------------------------------------" -ForegroundColor White
