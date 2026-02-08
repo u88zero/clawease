@@ -8,15 +8,14 @@ if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
     Write-Host "🟢 Installing Scoop..." -ForegroundColor Cyan
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     irm get.scoop.sh | iex
-    # 核心修复：安装完 Scoop 后立即将路径加入当前会话，避免找不到命令
-    $env:PATH += ";$HOME\scoop\shims"
 }
 
+# 核心修复：无论是否新装，都强制刷新当前会话的环境变量
+$env:PATH += ";$HOME\scoop\shims;$HOME\scoop\apps\nodejs-lts\current\bin;$HOME\scoop\apps\pnpm\current"
+
 # 2. Install Nodejs, Git, pnpm
-Write-Host "📦 Installing dependencies via Scoop..." -ForegroundColor Cyan
-scoop install nodejs-lts git pnpm
-# 再次加固 PATH
-$env:PATH += ";$HOME\scoop\apps\nodejs-lts\current\bin;$HOME\scoop\apps\pnpm\current"
+Write-Host "📦 Checking/Installing dependencies..." -ForegroundColor Cyan
+scoop install nodejs-lts git pnpm 2>$null # 忽略已安装的错误
 
 # 3. Clone and Setup
 $InstallDir = "$HOME\.clawease\openclaw"
