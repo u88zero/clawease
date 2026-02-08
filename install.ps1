@@ -5,14 +5,18 @@ Write-Host "🕶️ ClawEase Windows Installer: Preparing your Agent..." -Foregr
 
 # 1. Install Scoop if missing
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Write-Host "🟢 Installing Scoop..."
+    Write-Host "🟢 Installing Scoop..." -ForegroundColor Cyan
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     irm get.scoop.sh | iex
+    # 核心修复：安装完 Scoop 后立即将路径加入当前会话，避免找不到命令
+    $env:PATH += ";$HOME\scoop\shims"
 }
 
 # 2. Install Nodejs, Git, pnpm
-Write-Host "📦 Installing dependencies via Scoop..."
+Write-Host "📦 Installing dependencies via Scoop..." -ForegroundColor Cyan
 scoop install nodejs-lts git pnpm
+# 再次加固 PATH
+$env:PATH += ";$HOME\scoop\apps\nodejs-lts\current\bin;$HOME\scoop\apps\pnpm\current"
 
 # 3. Clone and Setup
 $InstallDir = "$HOME\.clawease\openclaw"
@@ -30,6 +34,7 @@ if (Test-Path $InstallDir) {
 
 # 4. pnpm Install
 Write-Host "🚀 Installing brains and 30+ built-in Skills..." -ForegroundColor Cyan
-pnpm install
+# 核心修复：直接调用 pnpm 的完整路径或确保环境变量生效
+& pnpm install
 
 Write-Host "✅ SUCCESS! run 'node dist\index.js onboard' inside $InstallDir to begin." -ForegroundColor Green
