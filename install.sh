@@ -33,7 +33,7 @@ fi
 # 5. Clone OpenClaw
 INSTALL_DIR="/opt/openclaw"
 if [ -d "$INSTALL_DIR" ]; then
-    echo "⚠️  Existing installation found at $INSTALL_DIR. Updating..."
+    echo "⚠️  Existing installation found at $INSTALL_DIR. Updating code but PRESERVING your config..."
     cd "$INSTALL_DIR" && git pull
 else
     echo "🟢 Cloning OpenClaw repository..."
@@ -41,8 +41,8 @@ else
     cd "$INSTALL_DIR"
 fi
 
-# 6. Install OpenClaw dependencies
-echo "🚀 Installing Agent brains (dependencies)... This may take a minute."
+# 6. Install OpenClaw dependencies and Bundled Skills
+echo "🚀 Installing Agent brains and pre-loading 30+ Skills..."
 pnpm install
 
 # 7. Final Polish

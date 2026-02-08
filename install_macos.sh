@@ -21,7 +21,7 @@ brew install node@22 git pnpm
 INSTALL_DIR="$HOME/.clawease/openclaw"
 mkdir -p "$HOME/.clawease"
 if [ -d "$INSTALL_DIR" ]; then
-    echo "⚠️  Updating existing installation..."
+    echo "⚠️  Updating code but PRESERVING your config..."
     cd "$INSTALL_DIR" && git pull
 else
     echo "🟢 Cloning OpenClaw..."
@@ -30,7 +30,7 @@ else
 fi
 
 # 4. pnpm Install
-echo "🚀 Installing brains..."
+echo "🚀 Installing brains and 30+ built-in Skills..."
 pnpm install
 
 echo "✅ SUCCESS! run 'cd $INSTALL_DIR && node dist/index.js onboard' to begin."

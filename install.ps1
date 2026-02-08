@@ -19,7 +19,7 @@ $InstallDir = "$HOME\.clawease\openclaw"
 if (!(Test-Path "$HOME\.clawease")) { New-Item -ItemType Directory -Path "$HOME\.clawease" }
 
 if (Test-Path $InstallDir) {
-    Write-Host "⚠️ Updating existing installation..."
+    Write-Host "⚠️ Updating code but PRESERVING your config..." -ForegroundColor Yellow
     Set-Location $InstallDir
     git pull
 } else {
@@ -29,7 +29,7 @@ if (Test-Path $InstallDir) {
 }
 
 # 4. pnpm Install
-Write-Host "🚀 Installing brains..."
+Write-Host "🚀 Installing brains and 30+ built-in Skills..." -ForegroundColor Cyan
 pnpm install
 
 Write-Host "✅ SUCCESS! run 'node dist\index.js onboard' inside $InstallDir to begin." -ForegroundColor Green
