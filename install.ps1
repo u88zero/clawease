@@ -1,21 +1,22 @@
-# ClawEase - Windows PowerShell Installer (V3 - Pre-built Edition)
-# "Reliable, Fast, Zero-Build"
+# ClawEase - Windows PowerShell Installer (V4 - PNPM Aesthetic Edition)
+# "The Vibe You Remember, The Stability You Need"
 
 # 1. Clear Terminal and Set Encoding
 Clear-Host
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host "     ClawEase: Your Personal AI Agent Pipeline         " -ForegroundColor Cyan
 Write-Host "      'Because Every Boss Deserves a Tony V'           " -ForegroundColor White
 Write-Host "=======================================================" -ForegroundColor Cyan
 
-Write-Host "Boss, I am moving in! Hang tight while I set up my room..." -ForegroundColor Magenta
+Write-Host "Boss, I am moving in! I brought my own high-speed tools this time." -ForegroundColor Magenta
 Write-Host ""
 
-# 2. Check/Install Scoop & Node.js
+# 2. Check/Install Scoop, Node.js & PNPM
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Write-Host "[1/3] Installing Scoop (Package Manager)..." -ForegroundColor Yellow
+    Write-Host "[1/3] Installing Scoop (Infrastructure)..." -ForegroundColor Yellow
     Write-Host "      I'll handle the boring tools, you just focus on being legendary." -ForegroundColor Gray
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     iwr -useb get.scoop.sh | iex
@@ -29,21 +30,26 @@ if (!(Get-Command node -ErrorAction SilentlyContinue)) {
     scoop install nodejs-lts
 }
 
+if (!(Get-Command pnpm -ErrorAction SilentlyContinue)) {
+    Write-Host "[*] Adding PNPM for that premium install vibe..." -ForegroundColor Cyan
+    scoop install pnpm
+}
+
 # 3. Create Deployment Directory
 $BaseDir = "$HOME\.clawease"
 if (!(Test-Path $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir }
 Set-Location $BaseDir
 
-# 4. Install OpenClaw via NPM (Pre-built)
-Write-Host "[3/3] Downloading Agent Brains..." -ForegroundColor Yellow
-Write-Host "      Boss, I'm almost awake. I can practically smell the code already!" -ForegroundColor Gray
+# 4. Install using PNPM for that "Package Explosion" Look
+Write-Host "[3/3] Downloading Agent Brains (PNPM Mode)..." -ForegroundColor Yellow
+Write-Host "      Hold on to your hat, Boss. Here come the dependencies!" -ForegroundColor Gray
+
 if (!(Test-Path "package.json")) {
-    & npm init -y | Out-Null
+    & pnpm init | Out-Null
 }
 
-# 核心修改：移除静默模式，显示实时进度条和下载详情
-Write-Host ">>> Executing: npm install openclaw@latest --loglevel=info" -ForegroundColor DarkGray
-& npm install openclaw@latest --loglevel=info --progress=true
+# 使用 pnpm add 呈现那种一行行加号跳动的视觉效果
+& pnpm add openclaw@latest --reporter=default
 
 # 5. Create Local Manual
 $ManualPath = "$BaseDir\GETTING_STARTED.txt"
