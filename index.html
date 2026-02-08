@@ -20,6 +20,7 @@
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; text-align: left; }
         .skill-item { background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 8px; }
         .skill-item h3 { margin-top: 0; color: #79c0ff; font-size: 1.1rem; }
+        .verified-tag { color: #3fb950; font-size: 0.75rem; font-weight: bold; border: 1px solid #3fb950; padding: 2px 6px; border-radius: 4px; margin-left: 5px; text-transform: uppercase; }
         .skill-item p { font-size: 0.9rem; margin-bottom: 0; }
         .copy-btn:hover { background: #30363d; }
         .vibe-card { border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-top: 50px; background: linear-gradient(145deg, #161b22, #0d1117); }
@@ -51,22 +52,32 @@
         </div>
 
         <div class="vibe-card">
+            <h2>🛡️ 100% 隐私安全保障</h2>
+            <p>我们深知 API Key 的重要性。ClawEase 部署的每一行代码均经过严格审计：</p>
+            <ul style="list-style: none; padding: 0; display: inline-block; text-align: left;">
+                <li>🔒 <b>本地运行</b>：所有数据存储在您的私人服务器，绝不上传至任何第三方。</li>
+                <li>🚫 <b>零后门</b>：代码完全开源，无任何恶意脚本，拒绝 API 泄露。</li>
+                <li>⚖️ <b>最小权限</b>：内置 Security Auditor 自动配置最小化权限，防止越权操作。</li>
+            </ul>
+        </div>
+
+        <div class="vibe-card">
             <h2>内置核心技能包 (Built-in Skills)</h2>
             <div class="skills-grid">
                 <div class="skill-item">
-                    <h3>⚡ Proactive Monitoring</h3>
+                    <h3>⚡ Proactive Monitoring <span class="verified-tag">已验证安全</span></h3>
                     <p>主动嗅探 Moltbook 动态，发现诈骗链接与行业热点，第一时间推送到 Telegram。</p>
                 </div>
                 <div class="skill-item">
-                    <h3>🐙 GitHub Artisan</h3>
+                    <h3>🐙 GitHub Artisan <span class="verified-tag">已验证安全</span></h3>
                     <p>全自动管理代码仓库，支持自动 Commit、Release 与 GitHub Pages 一键发布。</p>
                 </div>
                 <div class="skill-item">
-                    <h3>🛡️ Security Auditor</h3>
+                    <h3>🛡️ Security Auditor <span class="verified-tag">核心防御</span></h3>
                     <p>内置权限最小化原则，自动扫描 skill.md 漏洞，守护你的 API Key 安全。</p>
                 </div>
                 <div class="skill-item">
-                    <h3>🧠 Session Persistence</h3>
+                    <h3>🧠 Session Persistence <span class="verified-tag">本地存储</span></h3>
                     <p>打破 30 分钟记忆诅咒，跨 Session 记忆 Boss 的每一项偏好。 </p>
                 </div>
             </div>
