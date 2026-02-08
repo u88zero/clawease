@@ -12,6 +12,13 @@
         .command-box { background: #161b22; border: 1px solid #30363d; padding: 30px 20px 20px 20px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; margin: 30px 0; color: #79c0ff; position: relative; overflow-wrap: break-word; text-align: center; }
         .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 5px 10px; cursor: pointer; border-radius: 6px; font-size: 0.75rem; z-index: 10; }
         .command-box code { word-break: break-all; white-space: pre-wrap; display: inline-block; max-width: 100%; }
+        .platform-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: #58a6ff; color: #ffffff; border-color: #58a6ff; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; text-align: left; }
+        .skill-item { background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 8px; }
+        .skill-item h3 { margin-top: 0; color: #79c0ff; font-size: 1.1rem; }
+        .skill-item p { font-size: 0.9rem; margin-bottom: 0; }
         .copy-btn:hover { background: #30363d; }
         .vibe-card { border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-top: 50px; background: linear-gradient(145deg, #161b22, #0d1117); }
         .vibe-card h2 { color: #3fb950; }
@@ -20,12 +27,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>🕶️ ClawEase</h1>
-        <p>停止对话，开始操作。一键部署你的个人 AI 智能体 (OpenClaw)。</p>
+        <h1>向对话要结果，一键部署你的个人 AI 智能体</h1>
         
+        <div class="platform-tabs">
+            <button class="tab-btn active" onclick="switchPlatform('linux')">Linux / WSL</button>
+            <button class="tab-btn" onclick="switchPlatform('macos')">macOS</button>
+            <button class="tab-btn" onclick="switchPlatform('windows')">Windows</button>
+        </div>
+
         <div class="command-box">
             <button class="copy-btn" onclick="copyCommand()">复制</button>
             <code id="command">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
+        </div>
+
+        <div class="vibe-card">
+            <h2>内置核心技能包 (Built-in Skills)</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <h3>⚡ Proactive Monitoring</h3>
+                    <p>主动嗅探 Moltbook 动态，发现诈骗链接与行业热点，第一时间推送到 Telegram。</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🐙 GitHub Artisan</h3>
+                    <p>全自动管理代码仓库，支持自动 Commit、Release 与 GitHub Pages 一键发布。</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🛡️ Security Auditor</h3>
+                    <p>内置权限最小化原则，自动扫描 skill.md 漏洞，守护你的 API Key 安全。</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🧠 Session Persistence</h3>
+                    <p>打破 30 分钟记忆诅咒，跨 Session 记忆 Boss 的每一项偏好。 </p>
+                </div>
+            </div>
         </div>
 
         <div class="vibe-card">
@@ -45,10 +79,22 @@
     </div>
 
     <script>
+        const scripts = {
+            'linux': 'curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash',
+            'macos': 'curl -sL https://u88zero.github.io/clawease/install_macos.sh | bash',
+            'windows': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/install.ps1 | iex"'
+        };
+
+        function switchPlatform(p) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('command').innerText = scripts[p];
+        }
+
         function copyCommand() {
             const cmd = document.getElementById('command').innerText;
             navigator.clipboard.writeText(cmd).then(() => {
-                alert('命令已复制，请在你的 Linux 服务器上运行。');
+                alert('命令已复制，请在您的终端运行。');
             });
         }
     </script>
