@@ -40,7 +40,10 @@ Write-Host "      Boss, I'm almost awake. I can practically smell the code alrea
 if (!(Test-Path "package.json")) {
     & npm init -y | Out-Null
 }
-& npm install openclaw@latest
+
+# 核心修改：移除静默模式，显示实时进度条和下载详情
+Write-Host ">>> Executing: npm install openclaw@latest --loglevel=info" -ForegroundColor DarkGray
+& npm install openclaw@latest --loglevel=info --progress=true
 
 # 5. Create Local Manual
 $ManualPath = "$BaseDir\GETTING_STARTED.txt"
