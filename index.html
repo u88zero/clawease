@@ -84,21 +84,21 @@
         </div>
 
         <div id="platform-hint" class="platform-hint">
-            💡 <b>如何打开终端？</b> 快捷键: <code>Ctrl + Alt + T</code> 或在 Windows 搜索框输入 <code>WSL</code>
+            💡 <b>如何打开终端？</b> 快捷键: <code>Win + X</code> 然后按 <code>A</code> 打开 PowerShell (管理员)
         </div>
 
         <div class="command-box">
             <button class="copy-btn" onclick="copyCommand()">复制</button>
-            <code id="command">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
+            <code id="command">powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/install.ps1 | iex"</code>
         </div>
 
         <div class="vibe-card">
-            <h2>🛡️ 100% 隐私安全保障</h2>
-            <p>我们深知 API Key 的重要性。ClawEase 部署的每一行代码均经过严格审计：</p>
+            <h2>📖 附赠：Boss 专属操作手册</h2>
+            <p>安装完成后，我们会自动在您的电脑生成 <code>GETTING_STARTED.txt</code>，内容包含：</p>
             <ul style="list-style: none; padding: 0; display: inline-block; text-align: left;">
-                <li>🔒 <b>本地运行</b>：所有数据存储在您的私人服务器，绝不上传至任何第三方。</li>
-                <li>🚫 <b>零后门</b>：代码完全开源，无任何恶意脚本，拒绝 API 泄露。</li>
-                <li>⚖️ <b>最小权限</b>：内置 Security Auditor 自动配置最小化权限，防止越权操作。</li>
+                <li>🚀 <b>快速启动</b>：如何一秒唤醒您的 Tony V。</li>
+                <li>🛠️ <b>进阶指令</b>：常用运维命令汇总。</li>
+                <li>🔗 <b>官方文档直达</b>：<a href="https://docs.openclaw.ai/" target="_blank" style="color: #58a6ff;">docs.openclaw.ai</a> 深度解析。</li>
             </ul>
         </div>
 
@@ -154,7 +154,9 @@
 
         function switchPlatform(p) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            const currentTab = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.toLowerCase().includes(p));
+            if(currentTab) currentTab.classList.add('active');
+            
             document.getElementById('command').innerText = scripts[p];
             document.getElementById('platform-hint').innerHTML = hints[p];
         }
