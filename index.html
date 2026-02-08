@@ -8,6 +8,8 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; text-align: center; padding: 50px 20px; }
         .container { max-width: 800px; margin: auto; }
         h1 { color: #58a6ff; font-size: 3rem; margin-bottom: 10px; }
+        .free-badge { background: #3fb950; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 1rem; font-weight: bold; vertical-align: middle; margin-left: 10px; text-transform: uppercase; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(63, 185, 80, 0); } 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0); } }
         p { font-size: 1.2rem; color: #8b949e; }
         .command-box { background: #161b22; border: 1px solid #30363d; padding: 30px 20px 20px 20px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; margin: 30px 0; color: #79c0ff; position: relative; overflow-wrap: break-word; text-align: center; }
         .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 5px 10px; cursor: pointer; border-radius: 6px; font-size: 0.75rem; z-index: 10; }
@@ -27,7 +29,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>向对话要结果，一键部署你的个人 AI 智能体</h1>
+        <h1>向对话要结果，一键部署你的个人 AI 智能体 <span class="free-badge">永久免费</span></h1>
+        <p style="color: #3fb950; font-weight: bold; margin-top: -10px;">⚡️ 无需配置，无需付费，一键开启你的数字分身</p>
         
         <div class="platform-tabs">
             <button class="tab-btn active" onclick="switchPlatform('linux')">Linux / WSL</button>
@@ -38,6 +41,13 @@
         <div class="command-box">
             <button class="copy-btn" onclick="copyCommand()">复制</button>
             <code id="command">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
+        </div>
+
+        <div class="vibe-card">
+            <h2 style="color: #f85149;">⚠️ 拒绝高昂代建费</h2>
+            <p>市面上代搭建 Agent 动辄收费几百元？</p>
+            <p style="font-size: 1.5rem; color: #ffffff; font-weight: bold;">在 ClawEase，这一切都是 <span style="color: #3fb950;">FREE</span> 的。</p>
+            <p>我们的使命是让每一个 Boss 都能拥有自己的 Tony V。</p>
         </div>
 
         <div class="vibe-card">
