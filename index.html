@@ -9,8 +9,9 @@
         .container { max-width: 800px; margin: auto; }
         h1 { color: #58a6ff; font-size: 3rem; margin-bottom: 10px; }
         p { font-size: 1.2rem; color: #8b949e; }
-        .command-box { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 1rem; margin: 30px 0; color: #79c0ff; position: relative; }
-        .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 5px 10px; cursor: pointer; border-radius: 6px; font-size: 0.8rem; }
+        .command-box { background: #161b22; border: 1px solid #30363d; padding: 30px 20px 20px 20px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; margin: 30px 0; color: #79c0ff; position: relative; overflow-wrap: break-word; text-align: center; }
+        .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 5px 10px; cursor: pointer; border-radius: 6px; font-size: 0.75rem; z-index: 10; }
+        .command-box code { word-break: break-all; white-space: pre-wrap; display: inline-block; max-width: 100%; }
         .copy-btn:hover { background: #30363d; }
         .vibe-card { border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-top: 50px; background: linear-gradient(145deg, #161b22, #0d1117); }
         .vibe-card h2 { color: #3fb950; }
@@ -24,7 +25,7 @@
         
         <div class="command-box">
             <button class="copy-btn" onclick="copyCommand()">复制</button>
-            <code id="command" style="word-break: break-all; display: block; padding: 10px;">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
+            <code id="command">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
         </div>
 
         <div class="vibe-card">
