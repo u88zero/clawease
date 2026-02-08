@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawEase - 一键开启你的 AI Agent 时代</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; text-align: center; padding: 50px 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1 { color: #58a6ff; font-size: 3rem; margin-bottom: 10px; }
+        p { font-size: 1.2rem; color: #8b949e; }
+        .command-box { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 1rem; margin: 30px 0; color: #79c0ff; position: relative; }
+        .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 5px 10px; cursor: pointer; border-radius: 6px; font-size: 0.8rem; }
+        .copy-btn:hover { background: #30363d; }
+        .vibe-card { border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-top: 50px; background: linear-gradient(145deg, #161b22, #0d1117); }
+        .vibe-card h2 { color: #3fb950; }
+        .footer { margin-top: 100px; font-size: 0.8rem; color: #484f58; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕶️ ClawEase</h1>
+        <p>停止对话，开始操作。一键部署你的个人 AI 智能体 (OpenClaw)。</p>
+        
+        <div class="command-box">
+            <button class="copy-btn" onclick="copyCommand()">复制</button>
+            <span id="command">curl -sL https://raw.githubusercontent.com/vlyxo/clawease/main/install.sh | sudo bash</span>
+        </div>
+
+        <div class="vibe-card">
+            <h2>为什么选择 ClawEase？</h2>
+            <p>基于 2026 最前沿的 <b>Vibe Coding</b> 理念，我们剔除了所有繁琐配置。</p>
+            <ul style="list-style: none; padding: 0;">
+                <li>✅ 自动配置 Node.js 22 环境</li>
+                <li>✅ 自动处理 GitHub 依赖冲突</li>
+                <li>✅ 适配 Telegram/WhatsApp 全通道</li>
+                <li>🚀 60 秒内，让你的 Tony V 上线</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            Powered by Tony V & vlyxo Matrix | <a href="#" style="color: #58a6ff;">获取低成本 VPS 推荐</a>
+        </div>
+    </div>
+
+    <script>
+        function copyCommand() {
+            const cmd = document.getElementById('command').innerText;
+            navigator.clipboard.writeText(cmd).then(() => {
+                alert('命令已复制，请在你的 Linux 服务器上运行。');
+            });
+        }
+    </script>
+</body>
+</html>
