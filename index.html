@@ -25,9 +25,11 @@
         .command-box code { word-break: break-all; white-space: pre-wrap; display: inline-block; max-width: 100%; }
         
         .platform-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { background: #58a6ff; color: #ffffff; border-color: #58a6ff; }
-        .platform-hint { font-size: 0.9rem; color: #8b949e; margin-bottom: 10px; background: #0d1117; display: inline-block; padding: 4px 12px; border-radius: 4px; border-left: 3px solid #58a6ff; }
+        .tab-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .tab-btn.active { background: #58a6ff; color: #ffffff; border-color: #58a6ff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); }
+        .step-number { background: #58a6ff; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; margin-right: 10px; font-weight: bold; }
+        .step-title { display: flex; align-items: center; justify-content: center; margin-top: 30px; font-size: 1.2rem; color: #ffffff; }
+        .platform-hint { font-size: 0.95rem; color: #ffffff; margin-bottom: 15px; background: #21262d; display: inline-block; padding: 10px 20px; border-radius: 8px; border-left: 4px solid #58a6ff; }
         
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; text-align: left; }
         .skill-item { background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 8px; }
@@ -60,20 +62,26 @@
             <p>拒绝被割韭菜，Tony V 助你 0 成本白嫖最强 AI Agent 框架</p>
         </div>
 
+        <div class="step-title"><span class="step-number">1</span> 选择你的操作系统</div>
         <div class="platform-tabs">
-            <button class="tab-btn active" onclick="switchPlatform('linux')">Linux / WSL</button>
-            <button class="tab-btn" onclick="switchPlatform('macos')">macOS</button>
-            <button class="tab-btn" onclick="switchPlatform('windows')">Windows</button>
+            <button class="tab-btn" id="btn-linux" onclick="switchPlatform('linux')">🐧 Linux / WSL</button>
+            <button class="tab-btn" id="btn-macos" onclick="switchPlatform('macos')">🍎 macOS</button>
+            <button class="tab-btn" id="btn-windows" onclick="switchPlatform('windows')">🪟 Windows</button>
         </div>
 
+        <div class="step-title"><span class="step-number">2</span> 开启终端并复制指令</div>
         <div id="platform-hint" class="platform-hint">
-            💡 <b>如何打开终端？</b> 快捷键: <code>Ctrl + Alt + T</code> 或在 Windows 搜索框输入 <code>WSL</code>
+            💡 <b>正在检测系统...</b>
         </div>
 
         <div class="command-box">
-            <button class="copy-btn" onclick="copyCommand()">复制</button>
-            <code id="command">curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash</code>
+            <button class="copy-btn" id="copy-btn" onclick="copyCommand()">复制指令</button>
+            <code id="command">请先选择操作系统</code>
         </div>
+
+        <div class="step-title"><span class="step-number">3</span> 粘贴运行，搞定！</div>
+        <p style="color: #8b949e; font-size: 0.9rem;">只需等待约 60 秒，你的 AI 助手就会在本地降临。</p>
+
 
         <div class="email-section">
             <h2>📬 订阅 Boss 专刊：获取 Agent 调教指南 + 避坑手册</h2>
@@ -124,18 +132,37 @@
 
         function switchPlatform(p) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            const currentTab = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.toLowerCase().includes(p));
+            const currentTab = document.getElementById('btn-' + p);
             if(currentTab) currentTab.classList.add('active');
             
             document.getElementById('command').innerText = scripts[p];
             document.getElementById('platform-hint').innerHTML = hints[p];
+            
+            // 恢复按钮文字
+            document.getElementById('copy-btn').innerText = '复制指令';
         }
 
         function copyCommand() {
             const cmd = document.getElementById('command').innerText;
+            if (cmd.includes('请先选择')) return;
+            
             navigator.clipboard.writeText(cmd).then(() => {
-                alert('命令已复制，请在您的终端运行。');
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = '✅ 已复制';
+                btn.style.background = '#238636';
+                setTimeout(() => {
+                    btn.innerText = '复制指令';
+                    btn.style.background = '#21262d';
+                }, 2000);
             });
+        }
+
+        // 自动检测系统并预选
+        window.onload = function() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes('win')) switchPlatform('windows');
+            else if (ua.includes('mac')) switchPlatform('macos');
+            else switchPlatform('linux');
         }
     </script>
     <script data-goatcounter="https://u88zero.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
