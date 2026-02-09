@@ -27,6 +27,8 @@
         .platform-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .tab-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-weight: 600; }
         .tab-btn.active { background: #58a6ff; color: #ffffff; border-color: #58a6ff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); }
+        .auto-install-btn { background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%); color: #ffffff; padding: 15px 30px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer; margin: 20px 0; display: inline-block; box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4); transition: 0.3s; }
+        .auto-install-btn:hover { transform: scale(1.05); }
         .step-number { background: #58a6ff; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; margin-right: 10px; font-weight: bold; }
         .step-title { display: flex; align-items: center; justify-content: center; margin-top: 30px; font-size: 1.2rem; color: #ffffff; }
         .platform-hint { font-size: 0.95rem; color: #ffffff; margin-bottom: 15px; background: #21262d; display: inline-block; padding: 10px 20px; border-radius: 8px; border-left: 4px solid #58a6ff; min-height: 50px; }
@@ -64,6 +66,13 @@
             </div>
             <h2>ClawEase 永久免费</h2>
             <p>拒绝被割韭菜，Tony V 助你 0 成本白嫖最强 AI Agent 框架</p>
+        </div>
+
+        <div class="vibe-card" id="auto-install-section" style="display:none;">
+            <h2 style="color: #ff9f43;">🚀 懒人模式 (推荐)</h2>
+            <p>不想开终端？点这个直接下载安装程序，双击运行即可。</p>
+            <a href="https://u88zero.github.io/clawease/ClawEase-AutoInstaller.exe" class="auto-install-btn">点击下载一键安装器 (.exe)</a>
+            <p style="font-size: 0.8rem; color: #8b949e;">* 仅限 Windows 用户</p>
         </div>
 
         <div class="step-title"><span class="step-number">1</span> 选择你的操作系统</div>
@@ -127,7 +136,8 @@
         const scripts = {
             'linux': 'curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash',
             'macos': 'curl -sL https://u88zero.github.io/clawease/install_macos.sh | bash',
-            'windows': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/install.ps1 | iex"'
+            'windows': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/install.ps1 | iex"',
+            'windows_auto': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/ClawEase-AutoInstaller.exe -OutFile ClawEase.exe; .\ClawEase.exe"'
         };
 
         const hints = {
@@ -145,6 +155,13 @@
             
             const hintBox = document.getElementById('detection-box');
             hintBox.style.display = 'block';
+            
+            const autoSection = document.getElementById('auto-install-section');
+            if (p === 'windows') {
+                autoSection.style.display = 'block';
+            } else {
+                autoSection.style.display = 'none';
+            }
             
             if (auto) {
                 const osName = p === 'windows' ? 'Windows' : (p === 'macos' ? 'macOS' : 'Linux');
