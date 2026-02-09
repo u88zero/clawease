@@ -70,8 +70,10 @@
         </div>
 
         <div class="step-title"><span class="step-number">2</span> 开启终端并复制指令</div>
-        <div id="platform-hint" class="platform-hint">
-            💡 <b>正在检测系统...</b>
+        <div id="detection-box" style="margin-bottom: 15px; display: none;">
+            <div id="platform-hint" class="platform-hint">
+                💡 <b>正在检测系统...</b>
+            </div>
         </div>
 
         <div class="command-box">
@@ -130,13 +132,25 @@
             'windows': '💡 <b>如何打开终端？</b> 快捷键: <code>Win + X</code> 然后按 <code>A</code> 打开 PowerShell (管理员)'
         };
 
-        function switchPlatform(p) {
+        function switchPlatform(p, auto = false) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const currentTab = document.getElementById('btn-' + p);
             if(currentTab) currentTab.classList.add('active');
             
             document.getElementById('command').innerText = scripts[p];
-            document.getElementById('platform-hint').innerHTML = hints[p];
+            
+            const hintBox = document.getElementById('detection-box');
+            hintBox.style.display = 'block';
+            
+            if (auto) {
+                const osName = p === 'windows' ? 'Windows' : (p === 'macos' ? 'macOS' : 'Linux');
+                document.getElementById('platform-hint').innerHTML = `🔍 <b>已自动检测到您的系统为：${osName}</b><br>${hints[p]}`;
+                document.getElementById('platform-hint').style.borderColor = '#3fb950';
+                document.getElementById('platform-hint').style.background = '#161b22';
+            } else {
+                document.getElementById('platform-hint').innerHTML = hints[p];
+                document.getElementById('platform-hint').style.borderColor = '#58a6ff';
+            }
             
             // 恢复按钮文字
             document.getElementById('copy-btn').innerText = '复制指令';
@@ -160,9 +174,9 @@
         // 自动检测系统并预选
         window.onload = function() {
             const ua = navigator.userAgent.toLowerCase();
-            if (ua.includes('win')) switchPlatform('windows');
-            else if (ua.includes('mac')) switchPlatform('macos');
-            else switchPlatform('linux');
+            if (ua.includes('win')) switchPlatform('windows', true);
+            else if (ua.includes('mac')) switchPlatform('macos', true);
+            else switchPlatform('linux', true);
         }
     </script>
     <script data-goatcounter="https://u88zero.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
