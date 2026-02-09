@@ -59,6 +59,12 @@
         
         .vibe-card { border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-top: 50px; background: linear-gradient(145deg, #161b22, #0d1117); }
         .vibe-card h2 { color: #3fb950; }
+        .email-section { background: #161b22; border: 2px solid #3fb950; padding: 30px; border-radius: 12px; margin: 40px 0; text-align: center; }
+        .email-input { background: #0d1117; border: 1px solid #30363d; color: #ffffff; padding: 12px 20px; border-radius: 6px; font-size: 1rem; width: 60%; max-width: 300px; margin-bottom: 10px; }
+        .submit-btn { background: #238636; color: #ffffff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { background: #2ea043; }
+        .email-notice { font-size: 0.8rem; color: #8b949e; margin-top: 10px; }
+
         .footer { margin-top: 100px; font-size: 0.8rem; color: #484f58; }
     </style>
 </head>
@@ -132,6 +138,16 @@
                 <p><b>Q: 脚本里自带 Skills（技能）吗？</b></p>
                 <p>A: <b>是的。</b> 安装包内置了 OpenClaw 官方全套基础技能，并且自动集成了 ClawEase 专供的“主动预警”和“自动化管理”增强模块。</p>
             </div>
+        </div>
+
+        <div class="email-section">
+            <h2>🎁 获取 Boss 专属：Agent 调教指南 + 提示词包</h2>
+            <p>留下您的邮箱，我们将在 24 小时内为您推送《2026 Agent 运营避坑手册》</p>
+            <form action="https://formspree.io/f/xvgzpyzo" method="POST">
+                <input type="email" name="email" class="email-input" placeholder="输入您的常用邮箱" required>
+                <button type="submit" class="submit-btn">立即领取</button>
+            </form>
+            <p class="email-notice">已有 1,280 位 Boss 加入了我们的私域情报局</p>
         </div>
 
         <div class="footer">
