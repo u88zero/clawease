@@ -8,10 +8,10 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host "     ClawEase: Your Personal AI Agent Pipeline         " -ForegroundColor Cyan
-Write-Host "      'Because Every Boss Deserves a Tony V'           " -ForegroundColor White
+Write-Host "      'Synchronized with Official v2026.2.9'           " -ForegroundColor White
 Write-Host "=======================================================" -ForegroundColor Cyan
 
-Write-Host "Boss, I am moving in! I brought my own high-speed tools this time." -ForegroundColor Magenta
+Write-Host "Boss, I am moving in! Upgraded to the latest v2026.2.9 engine." -ForegroundColor Magenta
 Write-Host ""
 
 # 2. Check/Install Scoop, Node.js & PNPM

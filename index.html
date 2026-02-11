@@ -24,7 +24,11 @@
         .copy-btn:hover { background: #30363d; }
         .command-box code { word-break: break-all; white-space: pre-wrap; display: inline-block; max-width: 100%; }
         
-        .platform-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .troubleshooting { background: rgba(248, 81, 73, 0.1); border: 1px solid #f85149; padding: 20px; border-radius: 8px; margin: 40px 0; text-align: left; }
+        .troubleshooting h3 { color: #f85149; margin-top: 0; display: flex; align-items: center; gap: 8px; }
+        .troubleshooting code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #ff7b72; }
+
+        .platform-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-weight: 600; }
         .tab-btn.active { background: #58a6ff; color: #ffffff; border-color: #58a6ff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); }
         .auto-install-btn { background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%); color: #ffffff; padding: 15px 30px; border-radius: 12px; font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer; margin: 20px 0; display: inline-block; box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4); transition: 0.3s; }
@@ -57,8 +61,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>ClawEase <span class="free-badge">100% FREE</span></h1>
-        <p style="color: #3fb950; font-weight: bold; margin-top: -10px;">⚡️ 向对话要结果，一键部署你的个人 AI 智能体</p>
+        <h1>ClawEase <span class="free-badge">v2026.2.9</span></h1>
+        <p style="color: #3fb950; font-weight: bold; margin-top: -10px;">⚡️ 已同步官方最新版，一键部署你的个人 AI 智能体</p>
         
         <div class="free-hero-card">
             <div class="price-container">
@@ -66,7 +70,7 @@
                 <span class="current-price">¥0</span>
             </div>
             <h2>ClawEase 永久免费</h2>
-            <p>拒绝被割韭菜，Tony V 助你 0 成本白嫖最强 AI Agent 框架</p>
+            <p>拒绝被割韭菜，Tony V 助你 0 成本白嫖最新版本 OpenClaw</p>
         </div>
 
         <div class="vibe-card" id="auto-install-section" style="display:none; border: 2px solid #ff9f43; background: rgba(255, 159, 67, 0.05);">
@@ -80,8 +84,10 @@
         <div class="step-title"><span class="step-number">1</span> 选择你的操作系统</div>
         <div class="platform-tabs">
             <button class="tab-btn" id="btn-linux" onclick="switchPlatform('linux')">🐧 Linux / WSL</button>
+            <button class="tab-btn" id="btn-linux_cn" onclick="switchPlatform('linux_cn')">🚀 Linux (国内加速版)</button>
             <button class="tab-btn" id="btn-macos" onclick="switchPlatform('macos')">🍎 macOS</button>
             <button class="tab-btn" id="btn-windows" onclick="switchPlatform('windows')">🪟 Windows</button>
+            <button class="tab-btn" id="btn-windows_cn" onclick="switchPlatform('windows_cn')">🚀 Windows (国内镜像版)</button>
         </div>
 
         <div class="step-title"><span class="step-number">2</span> 开启终端并复制指令</div>
@@ -99,6 +105,20 @@
         <div class="step-title"><span class="step-number">3</span> 粘贴运行，搞定！</div>
         <p style="color: #8b949e; font-size: 0.9rem;">只需等待约 60 秒，你的 AI 助手就会在本地降临。</p>
 
+        <div class="troubleshooting">
+            <h3>⚠️ 遇到红字报错？(Boss 的秘密武器)</h3>
+            <p>1. 如果提示 <code>基础连接已经关闭</code>：说明 TLS 版本太低。请先运行：<br><code>[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12</code></p>
+            <p>2. 如果提示 <code>PermissionDenied</code>：执行策略被锁死。请使用：<br><code>powershell -ExecutionPolicy Bypass -Command "irm get.scoop.sh | iex"</code></p>
+            <p>3. <b>正确强制安装方式</b>：如果常规安装失败，请依次执行：<br>
+                <code>irm get.scoop.sh -outfile install.ps1</code><br>
+                <code>.\install.ps1 -RunAsAdmin</code> (提示确认选 Y)
+            </p>
+            <p>4. 如果提示 <code>spawn git ENOENT</code>：系统缺少 Git。请运行：<code>scoop install git</code> 并重启终端。</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.85rem; margin-top: 15px; border-left: 4px solid #3fb950;">
+                <b>🚀 [国内暴力越狱版一键命令]：</b><br>
+                <code style="color: #3fb950;">powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://u88zero.github.io/clawease/install_cn.ps1 | iex"</code>
+            </div>
+        </div>
 
         <div class="email-section">
             <h2>📬 订阅 Boss 专刊：获取 Agent 调教指南 + 避坑手册</h2>
@@ -146,15 +166,19 @@
     <script>
         const scripts = {
             'linux': 'curl -sL https://u88zero.github.io/clawease/install.sh | sudo bash',
+            'linux_cn': 'curl -sL https://u88zero.github.io/clawease/install_cn.sh | sudo bash',
             'macos': 'curl -sL https://u88zero.github.io/clawease/install_macos.sh | bash',
             'windows': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/install.ps1 | iex"',
+            'windows_cn': 'powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://u88zero.github.io/clawease/install_cn.ps1 | iex"',
             'windows_auto': 'powershell -ExecutionPolicy Bypass -Command "iwr -useb https://u88zero.github.io/clawease/ClawEase-AutoInstaller.exe -OutFile ClawEase.exe; .\ClawEase.exe"'
         };
 
         const hints = {
             'linux': '💡 <b>如何打开终端？</b> 快捷键: <code>Ctrl + Alt + T</code> 或在 Windows 搜索框输入 <code>WSL</code>',
+            'linux_cn': '🚀 <b>Linux 国内加速版：</b> 使用 Gitee 镜像、NodeSource 镜像以及阿里 NPM 镜像，极速部署 v2026.2.9。',
             'macos': '💡 <b>如何打开终端？</b> 快捷键: <code>Command + Space</code> 输入 <code>Terminal</code> 并回车',
-            'windows': '💡 <b>如何打开终端？</b> 快捷键: <code>Win + X</code> 然后按 <code>A</code> 打开 PowerShell (管理员)'
+            'windows': '💡 <b>如何打开终端？</b> 快捷键: <code>Win + X</code> 然后按 <code>A</code> 打开 PowerShell (管理员)',
+            'windows_cn': '🚀 <b>Windows 国内镜像版：</b> 自动切换 TLS 1.2 并使用阿里镜像源，解决“连接已关闭”和下载缓慢问题。'
         };
 
         function switchPlatform(p, auto = false) {
@@ -168,14 +192,14 @@
             hintBox.style.display = 'block';
             
             const autoSection = document.getElementById('auto-install-section');
-            if (p === 'windows') {
+            if (p === 'windows' || p === 'windows_cn') {
                 autoSection.style.display = 'block';
             } else {
                 autoSection.style.display = 'none';
             }
             
             if (auto) {
-                const osName = p === 'windows' ? 'Windows' : (p === 'macos' ? 'macOS' : 'Linux');
+                const osName = p.startsWith('windows') ? 'Windows' : (p === 'macos' ? 'macOS' : 'Linux');
                 // 模拟扫描效果
                 document.getElementById('platform-hint').innerHTML = `<span class="scanning">📡 <b>正在扫描系统环境...</b></span>`;
                 document.getElementById('platform-hint').style.borderColor = '#e1b12c';
@@ -187,8 +211,8 @@
                 }, 1500);
             } else {
                 document.getElementById('platform-hint').innerHTML = hints[p];
-                document.getElementById('platform-hint').style.borderColor = '#58a6ff';
-                document.getElementById('platform-hint').style.background = '#0d1117';
+                document.getElementById('platform-hint').style.borderColor = p === 'windows_cn' ? '#ff9f43' : '#58a6ff';
+                document.getElementById('platform-hint').style.background = p === 'windows_cn' ? 'rgba(255, 159, 67, 0.05)' : '#0d1117';
             }
             
             document.getElementById('copy-btn').innerText = '复制指令';
