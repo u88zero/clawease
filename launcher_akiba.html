@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawEase Launcher - Akiba Style Demo</title>
+    <style>
+        :root {
+            --primary: #fb7299; /* B站粉 */
+            --bg: #f1f2f3;
+            --sidebar-bg: #ffffff;
+            --text-main: #18191c;
+            --text-secondary: #9499a0;
+            --border: #e3e5e7;
+            --success: #3fb950;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 80px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            gap: 25px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-secondary);
+        }
+
+        .nav-icon.active { background: var(--primary); color: white; }
+        .nav-icon:hover:not(.active) { background: #f6f7f8; }
+
+        /* 主体内容 */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .version-tag {
+            background: #ffffff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* 状态卡片 */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--text-secondary); }
+        .card .value { font-size: 1.5rem; font-weight: bold; }
+
+        /* 控制台 */
+        .console-box {
+            flex: 1;
+            background: #18191c;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #d1d1d1;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+        .console-line { margin-bottom: 5px; }
+        .console-ts { color: var(--primary); margin-right: 8px; }
+        .console-info { color: #58a6ff; }
+        .console-success { color: #3fb950; }
+
+        /* 底部操作栏 */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-start { background: var(--primary); color: white; font-size: 1.1rem; flex: 2; justify-content: center; }
+        .btn-start:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-main); flex: 1; justify-content: center; }
+        .btn-secondary:hover { background: #f6f7f8; }
+
+        /* 动画引导 */
+        .loading-dot { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .akiba-badge {
+            background: #fff0f3;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border: 1px solid var(--primary);
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="nav-icon active">🏠</div>
+        <div class="nav-icon">🛠️</div>
+        <div class="nav-icon">📦</div>
+        <div class="nav-icon">💬</div>
+        <div style="margin-top: auto; margin-bottom: 20px;" class="nav-icon">⚙️</div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <div style="display:flex; align-items: center;">
+                <h2 style="margin:0;">ClawEase 管理界面</h2>
+                <span class="akiba-badge">秋叶式 UI 参考版</span>
+            </div>
+            <div class="version-tag">当前版本: v2026.2.9 | 分支: master</div>
+        </div>
+
+        <div class="status-grid">
+            <div class="card">
+                <h3>环境状态</h3>
+                <div class="value" style="color: var(--success);">健康</div>
+                <p style="font-size:0.75rem; color:var(--text-secondary); margin:5px 0 0 0;">Node 22.2 | PNPM 9.0</p>
+            </div>
+            <div class="card">
+                <h3>Git 状态</h3>
+                <div class="value">最新</div>
+                <p style="font-size:0.75rem; color:var(--text-secondary); margin:5px 0 0 0;">最后检查: 1分钟前</p>
+            </div>
+            <div class="card">
+                <h3>智能体</h3>
+                <div class="value">Tony V</div>
+                <p style="font-size:0.75rem; color:var(--text-secondary); margin:5px 0 0 0;">本地存储: Safe</p>
+            </div>
+        </div>
+
+        <div class="console-box" id="console">
+            <div class="console-line"><span class="console-ts">[16:06:21]</span> <span class="console-info">INFO</span> 正在检查本地环境...</div>
+            <div class="console-line"><span class="console-ts">[16:06:22]</span> <span class="console-info">INFO</span> 成功检测到 Node.js 22.2.0</div>
+            <div class="console-line"><span class="console-ts">[16:06:23]</span> <span class="console-info">INFO</span> 成功检测到 Git 环境</div>
+            <div class="console-line"><span class="console-ts">[16:06:24]</span> <span class="console-success">SUCCESS</span> 启动器就绪，Boss 请指示。</div>
+            <div class="console-line">----------------------------------------------------------------</div>
+            <div class="console-line">>>> 隐私声明：本启动器不保存任何 API Key，所有配置均持久化在本地 openclaw.json。</div>
+        </div>
+
+        <div class="action-bar">
+            <button class="btn btn-start">🚀 一键启动 Tony V</button>
+            <button class="btn btn-secondary">🔄 检查更新</button>
+            <button class="btn btn-secondary">🛠️ 依赖修复</button>
+        </div>
+    </div>
+
+    <script>
+        // 模拟控制台动态效果
+        const consoleEl = document.getElementById('console');
+        function addLog(msg, type='INFO') {
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.innerHTML = `<span class="console-ts">[${time}]</span> <span class="console-${type.toLowerCase()}">${type}</span> ${msg}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // 按钮点击模拟
+        document.querySelector('.btn-start').onclick = () => {
+            addLog('正在唤醒 Tony V...', 'INFO');
+            setTimeout(() => addLog('执行策略校验通过。', 'SUCCESS'), 500);
+            setTimeout(() => addLog('正在建立 Telegram 隧道...', 'INFO'), 1000);
+            setTimeout(() => addLog('Tony V 已在 Telegram 终端上线！', 'SUCCESS'), 2000);
+        };
+    </script>
+</body>
+</html>
