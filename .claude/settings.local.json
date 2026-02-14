@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"./test_install.ps1\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"Get-Content ''./install.ps1'' | Out-Null; Write-Host ''Syntax check passed'' -ForegroundColor Green\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"./test_syntax.ps1\")"
+    ]
+  }
+}
