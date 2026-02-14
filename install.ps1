@@ -9,6 +9,11 @@ Clear-Host
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Force git to use HTTPS instead of SSH (fixes libsignal-node error)
+$env:GIT_CONFIG_COUNT = "1"
+$env:GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf"
+$env:GIT_CONFIG_VALUE_0 = "git+ssh://git@github.com/"
+
 # ============================================================
 # Auto-detect System Language
 # ============================================================
@@ -82,6 +87,10 @@ if (!(Get-Command git -ErrorAction SilentlyContinue)) {
     scoop install git
     $env:PATH = $env:PATH + ";$HOME\scoop\shims"
 }
+
+# Force HTTPS for git (permanent fix for SSH errors)
+& git config --global url."https://github.com/".insteadOf "git+ssh://git@github.com/"
+& git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
 
 # Detect Node.js Version (Require v20+)
 $NodeInstalled = $false

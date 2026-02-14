@@ -1,105 +1,167 @@
-# ClawEase - Windows PowerShell Installer (CN Optimized Edition)
-# "Force Install & Dependency Guard"
+# ============================================================
+# ClawEase - Windows PowerShell Installer (CN Optimized)
+# "Force Install & Dependency Guard Edition"
+# ============================================================
 
-# 1. 强制开启 TLS 1.2 并设置编码
+# Force UTF-8 + TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Clear-Host
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$env:LANG = "zh_CN.UTF-8"
+
+# Force git to use HTTPS instead of SSH (fixes libsignal-node error)
+$env:GIT_CONFIG_COUNT = "1"
+$env:GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf"
+$env:GIT_CONFIG_VALUE_0 = "git+ssh://git@github.com/"
+
+Clear-Host
 
 Write-Host "=======================================================" -ForegroundColor Cyan
-Write-Host "     ClawEase: Your Personal AI Agent Pipeline (CN)    " -ForegroundColor Cyan
-Write-Host "      'Force Install & Dependency Guard Edition'        " -ForegroundColor White
+Write-Host "     ClawEase: AI Agent Pipeline (CN Edition)          " -ForegroundColor Cyan
+Write-Host "     v2026.2 - Force Install & Dependency Guard        " -ForegroundColor White
 Write-Host "=======================================================" -ForegroundColor Cyan
-
-Write-Host "Boss，Tony V 正在暴力破解权限限制，请稍后..." -ForegroundColor Magenta
+Write-Host ""
+Write-Host "Boss, Tony V zheng zai wei ni bu shu zhi neng ti..." -ForegroundColor Magenta
+Write-Host "[INFO] Deploying your personal AI Agent..." -ForegroundColor Magenta
 Write-Host ""
 
-# 2. 强制安装 Scoop (针对权限受限环境优化)
+# ============================================================
+# Scoop
+# ============================================================
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Write-Host "[1/4] 系统缺失 Scoop，正在强制安装并绕过策略..." -ForegroundColor Yellow
-    # 使用国内镜像加速
+    Write-Host "[1/4] Installing Scoop (package manager)..." -ForegroundColor Yellow
     $installer_url = "https://gitee.com/glacier/scoop-installer/raw/master/install.ps1"
-    
-    # 执行强制越狱安装
     powershell -ExecutionPolicy Bypass -Command "iwr -useb $installer_url | iex"
-    
-    # 刷新当前进程的环境变量，确得装完立刻能用
     $env:PATH += ";$HOME\scoop\shims"
 }
 
-# 3. 核心依赖守护：安装 Git, Node.js & PNPM
-# 解决截图中的 "npm error syscall spawn git" 问题
-Write-Host "[2/4] 检查核心生存依赖 (Git & Runtime)..." -ForegroundColor Yellow
-
+# ============================================================
+# Git
+# ============================================================
 if (!(Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Host "[*] 关键发现：系统缺少 Git！正在通过 Scoop 强制补齐..." -ForegroundColor Cyan
+    Write-Host "[2/4] Installing Git..." -ForegroundColor Yellow
     scoop install git
+    $env:PATH += ";$HOME\scoop\shims"
+} else {
+    Write-Host "[OK] Git detected" -ForegroundColor Green
 }
 
-if (!(Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Host "[*] 正在通过 Scoop 安装 Node.js (LTS)..." -ForegroundColor Cyan
+# Force HTTPS globally for git (permanent fix for SSH errors)
+& git config --global url."https://github.com/".insteadOf "git+ssh://git@github.com/"
+& git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+
+# ============================================================
+# Node.js
+# ============================================================
+$NodeInstalled = $false
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    $NodeVersion = (node --version) -replace 'v', ''
+    $NodeMajor = [int]($NodeVersion -split '\.')[0]
+    if ($NodeMajor -ge 20) {
+        $NodeInstalled = $true
+        Write-Host "[OK] Node.js v$NodeVersion detected" -ForegroundColor Green
+    } else {
+        Write-Host "[!] Node.js v$NodeVersion too old, need v20+" -ForegroundColor Red
+    }
+}
+
+if (!$NodeInstalled) {
+    Write-Host "[3/4] Installing Node.js LTS..." -ForegroundColor Yellow
     scoop install nodejs-lts
+    $env:PATH += ";$HOME\scoop\shims"
 }
 
+# ============================================================
+# PNPM
+# ============================================================
 if (!(Get-Command pnpm -ErrorAction SilentlyContinue)) {
-    Write-Host "[*] 正在通过 Scoop 安装 PNPM..." -ForegroundColor Cyan
+    Write-Host "[4/4] Installing PNPM..." -ForegroundColor Yellow
     scoop install pnpm
+    $env:PATH += ";$HOME\scoop\shims"
+} else {
+    Write-Host "[OK] PNPM detected" -ForegroundColor Green
 }
 
-# 4. 配置 NPM 镜像源加速下载
-Write-Host "[3/4] 正在配置国内高速源 (阿里云)..." -ForegroundColor Cyan
+# ============================================================
+# CN Mirror
+# ============================================================
+Write-Host "[CONFIG] Setting China mirror (npmmirror.com)..." -ForegroundColor Cyan
 & pnpm config set registry https://registry.npmmirror.com
 
-# 5. 准备部署目录
+# ============================================================
+# Deploy
+# ============================================================
 $BaseDir = "$HOME\.clawease"
-if (!(Test-Path $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir }
+if (!(Test-Path $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir | Out-Null }
 Set-Location $BaseDir
 
-# 6. 安装最新版 OpenClaw (v2026.2.9)
-Write-Host "[4/4] 正在部署最新核心 v2026.2.9..." -ForegroundColor Yellow
+Write-Host "[DEPLOY] Installing OpenClaw latest..." -ForegroundColor Yellow
 if (!(Test-Path "package.json")) {
     & pnpm init | Out-Null
 }
 
-# 解决某些环境下 pnpm 找不到 git 的问题
 $env:PATH += ";$HOME\scoop\shims"
 & pnpm add openclaw@latest --reporter=default
 
-# 7. 创建本地操作手册
+# ============================================================
+# Manual
+# ============================================================
 $ManualPath = "$BaseDir\GETTING_STARTED.txt"
 $ManualContent = @"
 =======================================================
-           ClawEase - 你的智能体管理手册
+           ClawEase - Agent Manual
 =======================================================
 
-恭喜 Boss！你的 AI 助手 (Tony V) 已经部署完毕。
+Your AI Agent is ready.
 
-快速启动:
-1. 运行此命令唤醒助手:
+Quick Start:
+1. Wake up your Agent:
    npx openclaw onboard
 
-2. 查看当前状态:
+2. Check status:
    npx openclaw status
 
-3. 官方文档:
+3. Official docs:
    https://docs.openclaw.ai/
 
-提示:
-- 如果提示 'git not found'，请重开一个窗口再试。
-- 保持此窗口开启，助手即可持续运行。
-- 你可以通过浏览器访问控制台: http://localhost:18789
+Tips:
+- If 'git not found', reopen a new terminal window.
+- Keep this window open while agent is running.
+- Web console: http://localhost:18789
+
+Config:
+- Template: $BaseDir\.env.template
+- Active:   $BaseDir\.env
 =======================================================
 "@
 $ManualContent | Out-File -FilePath $ManualPath -Encoding utf8
 
-# 8. 成功谢幕
+# ============================================================
+# .env Template
+# ============================================================
+$EnvTemplate = @"
+# ClawEase Environment Configuration
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
+OPENCLAW_PORT=18789
+OPENCLAW_HOST=localhost
+LOG_LEVEL=info
+"@
+
+$EnvPath = "$BaseDir\.env.template"
+$EnvTemplate | Out-File -FilePath $EnvPath -Encoding utf8
+if (!(Test-Path "$BaseDir\.env")) {
+    $EnvTemplate | Out-File -FilePath "$BaseDir\.env" -Encoding utf8
+}
+
+# ============================================================
+# Done
+# ============================================================
 Write-Host ""
 Write-Host "-------------------------------------------------------" -ForegroundColor White
-Write-Host " SUCCESS! 搞定！Boss，你已经正式跨入智能体时代。" -ForegroundColor Green
+Write-Host " SUCCESS! Agent is ready." -ForegroundColor Green
 Write-Host "-------------------------------------------------------" -ForegroundColor White
-Write-Host "下一步操作 (请重开窗口以刷新环境变量)：" -ForegroundColor White
+Write-Host "Next step (reopen terminal first):" -ForegroundColor White
 Write-Host "   npx openclaw onboard" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "详细手册：notepad $ManualPath" -ForegroundColor White
+Write-Host "Manual: notepad $ManualPath" -ForegroundColor White
 Write-Host "-------------------------------------------------------" -ForegroundColor White
