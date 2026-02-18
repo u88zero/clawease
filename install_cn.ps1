@@ -1,6 +1,6 @@
 # ============================================================
 # ClawEase - Windows PowerShell Installer (CN Optimized)
-# "Force Install & Dependency Guard Edition"
+# "Force Install & Dependency Guard Edition" v2
 # ============================================================
 
 # Force UTF-8 + TLS 1.2
@@ -18,21 +18,63 @@ Clear-Host
 
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host "     ClawEase: AI Agent Pipeline (CN Edition)          " -ForegroundColor Cyan
-Write-Host "     v2026.2 - Force Install & Dependency Guard        " -ForegroundColor White
+Write-Host "     v2026.2.1 - Fixed Scoop installer                " -ForegroundColor White
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Boss, Tony V zheng zai wei ni bu shu zhi neng ti..." -ForegroundColor Magenta
 Write-Host "[INFO] Deploying your personal AI Agent..." -ForegroundColor Magenta
 Write-Host ""
 
 # ============================================================
-# Scoop
+# Scoop (with fallback sources)
 # ============================================================
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
     Write-Host "[1/4] Installing Scoop (package manager)..." -ForegroundColor Yellow
-    $installer_url = "https://gitee.com/glacier/scoop-installer/raw/master/install.ps1"
-    powershell -ExecutionPolicy Bypass -Command "iwr -useb $installer_url | iex"
-    $env:PATH += ";$HOME\scoop\shims"
+
+    $scoop_installed = $false
+
+    # Try 1: Official Scoop installer
+    try {
+        Write-Host "  -> Trying official installer..." -ForegroundColor Gray
+        Invoke-RestMethod -Uri "https://get.scoop.sh" | Invoke-Expression
+        $env:PATH += ";$HOME\scoop\shims"
+        if (Get-Command scoop -ErrorAction SilentlyContinue) {
+            $scoop_installed = $true
+            Write-Host "  [OK] Scoop installed via official source" -ForegroundColor Green
+        }
+    } catch {
+        Write-Host "  [!] Official source failed, trying mirror..." -ForegroundColor Yellow
+    }
+
+    # Try 2: Gitee mirror (backup)
+    if (!$scoop_installed) {
+        try {
+            Write-Host "  -> Trying Gitee mirror..." -ForegroundColor Gray
+            $installer_url = "https://gitee.com/glsnames/scoop-installer/raw/master/bin/install.ps1"
+            powershell -ExecutionPolicy Bypass -Command "iwr -useb $installer_url | iex"
+            $env:PATH += ";$HOME\scoop\shims"
+            if (Get-Command scoop -ErrorAction SilentlyContinue) {
+                $scoop_installed = $true
+                Write-Host "  [OK] Scoop installed via Gitee mirror" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "  [!] Gitee mirror also failed" -ForegroundColor Red
+        }
+    }
+
+    if (!$scoop_installed) {
+        Write-Host ""
+        Write-Host "=======================================================" -ForegroundColor Red
+        Write-Host " ERROR: Scoop installation failed!" -ForegroundColor Red
+        Write-Host " Please install Scoop manually:" -ForegroundColor Yellow
+        Write-Host '   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser' -ForegroundColor White
+        Write-Host '   Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression' -ForegroundColor White
+        Write-Host " Then re-run this installer." -ForegroundColor Yellow
+        Write-Host "=======================================================" -ForegroundColor Red
+        Read-Host "Press Enter to exit"
+        exit 1
+    }
+} else {
+    Write-Host "[OK] Scoop detected" -ForegroundColor Green
 }
 
 # ============================================================
@@ -42,6 +84,11 @@ if (!(Get-Command git -ErrorAction SilentlyContinue)) {
     Write-Host "[2/4] Installing Git..." -ForegroundColor Yellow
     scoop install git
     $env:PATH += ";$HOME\scoop\shims"
+    if (!(Get-Command git -ErrorAction SilentlyContinue)) {
+        Write-Host "[!] Git installation failed. Please install Git manually: https://git-scm.com/" -ForegroundColor Red
+        Read-Host "Press Enter to exit"
+        exit 1
+    }
 } else {
     Write-Host "[OK] Git detected" -ForegroundColor Green
 }
@@ -164,4 +211,5 @@ Write-Host "Next step (reopen terminal first):" -ForegroundColor White
 Write-Host "   npx openclaw onboard" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Manual: notepad $ManualPath" -ForegroundColor White
+Write-Host "Dashboard: https://u88zero.github.io/clawease-pro/dashboard/" -ForegroundColor Cyan
 Write-Host "-------------------------------------------------------" -ForegroundColor White
